@@ -17,28 +17,28 @@ You should have received a copy of the GNU General Public License
 along with PluginBase.  If not, see <http://www.gnu.org/licenses/>.
 */
 package io.github.Eli112358.PluginBase;
-public enum Version {
-	Base(0, 0, 0),
-	Command(0, 0, 0),
-	Plugin(0, 0, 0),
-	Version(0, 0, 0);
-	private int Major, Minor, Update;
-	Version(int major, int minor, int update) {
-		Major = major;
-		Minor = minor;
-		Update = update;
+import org.bukkit.plugin.java.JavaPlugin;
+public class Plugin extends JavaPlugin {
+	protected static Plugin instance = null;
+	protected Base base;
+	protected Plugin() {
+		super();
+		base = Base.getInstance();
+		instance = this;
 	}
-	public int getMajor() {
-		return Major;
+	public Base getBase() {
+		return base;
 	}
-	public int getMinor() {
-		return Minor;
-	}
-	public int getUpdate() {
-		return Update;
+	public static Plugin getInstance() {
+		if(Base.plugin == null) instance = new Plugin();
+		return instance;
 	}
 	@Override
-	public String toString() {
-		return String.format("%s: v%s.%s.%s", name(), getMajor(), getMinor(), getUpdate());
+	public void onDisable() {
+		getBase().onDisable();
+	}
+	@Override
+	public void onEnable() {
+		getBase().onEnable();
 	}
 }
